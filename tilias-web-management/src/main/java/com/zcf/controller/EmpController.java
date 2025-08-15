@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 员工管理
@@ -32,6 +33,17 @@ public class EmpController {
         PageResult<Emp> pageResult = empService.page(empQueryParam);
         return Result.success(pageResult);
 
+    }
+
+    /**
+     * 查询全部员工信息
+     * @return 员工列表
+     */
+    @GetMapping("/list")
+    public Result list(){
+        log.info("查询全部员工信息");
+        List<Emp> empList = empService.list();
+        return Result.success(empList);
     }
 
     @PostMapping

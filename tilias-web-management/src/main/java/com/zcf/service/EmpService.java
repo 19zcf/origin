@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * 员工业务层
@@ -27,6 +28,12 @@ public interface EmpService {
      * @param emp
      */
     void save(Emp emp);
+
+    /**
+     * 查询全部员工信息
+     * @return 员工列表
+     */
+    List<Emp> list();
 
     void delete(Integer[] ids);
 

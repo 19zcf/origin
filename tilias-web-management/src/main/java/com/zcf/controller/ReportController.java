@@ -1,6 +1,7 @@
 package com.zcf.controller;
 
 
+import com.zcf.pojo.ClazzOption;
 import com.zcf.pojo.JobOption;
 import com.zcf.pojo.Result;
 import com.zcf.service.ReportService;
@@ -41,6 +42,25 @@ public class ReportController {
         log.info("统计员工性别数据");
         List<Map<String,Object>> genderList = reportService.getEmpGenderData();
         return Result.success(genderList);
+    }
+
+    /**
+     * 统计班级人数数据
+     * @return 班级人数统计结果
+     */
+
+    @GetMapping("/studentCountData")
+    public Result getStudentCountData(){
+        log.info("统计班级人数数据");
+        ClazzOption studentCountData = reportService.getStudentCountData();
+        return Result.success(studentCountData);
+    }
+
+    @GetMapping("/studentDegreeData")
+    public Result getStudentDegreeData(){
+        log.info("统计学生学历");
+        List<Map<String,Object>> studentDegreeData = reportService.getStudentDegreeData();
+        return Result.success(studentDegreeData);
     }
 
 }

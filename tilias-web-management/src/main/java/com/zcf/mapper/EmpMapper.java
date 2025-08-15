@@ -30,6 +30,12 @@ public interface EmpMapper {
 
     public List<Emp> list(EmpQueryParam empQueryParam);
 
+    /**
+     * 查询全部员工信息
+     * @return 员工列表
+     */
+    List<Emp> listAll();
+
 
     /**
      * 保存员工信息

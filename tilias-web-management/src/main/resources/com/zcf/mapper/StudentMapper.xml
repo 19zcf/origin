@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zcf.mapper.StudentMapper">
+
+    <!-- 根据条件查询学员列表 -->
+    <select id="list" resultType="com.zcf.pojo.Student">
+        SELECT 
+            s.id,
+            s.name,
+            s.no,
+            s.gender,
+            s.phone,
+            s.id_card as idCard,
+            s.is_college as isCollege,
+            s.address,
+            s.degree,
+            s.graduation_date as graduationDate,
+            s.clazz_id as clazzId,
+            s.violation_count as violationCount,
+            s.violation_score as violationScore,
+            s.create_time as createTime,
+            s.update_time as updateTime,
+            c.name as clazzName
+        FROM student s
+        LEFT JOIN clazz c ON s.clazz_id = c.id
+        <where>
+            <if test="name != null and name != ''">
+                AND s.name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="degree != null">
+                AND s.degree = #{degree}
+            </if>
+            <if test="clazzId != null">
+                AND s.clazz_id = #{clazzId}
+            </if>
+        </where>
+        ORDER BY s.update_time DESC
+    </select>
+
+    <!-- 根据条件查询学员总数 -->
+    <select id="getTotal" resultType="long">
+        SELECT COUNT(*)
+        FROM student s
+        <where>
+            <if test="name != null and name != ''">
+                AND s.name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="degree != null">
+                AND s.degree = #{degree}
+            </if>
+            <if test="clazzId != null">
+                AND s.clazz_id = #{clazzId}
+            </if>
+        </where>
+    </select>
+
+    <!-- 保存学员信息 -->
+    <insert id="save" parameterType="com.zcf.pojo.Student">
+        INSERT INTO student (
+            name, no, gender, phone, id_card, is_college, address, 
+            degree, graduation_date, clazz_id, violation_count, violation_score,
+            create_time, update_time
+        ) VALUES (
+            #{name}, #{no}, #{gender}, #{phone}, #{idCard}, #{isCollege}, #{address},
+            #{degree}, #{graduationDate}, #{clazzId}, #{violationCount}, #{violationScore},
+            #{createTime}, #{updateTime}
+        )
+    </insert>
+
+    <!-- 根据ID查询学员信息 -->
+    <select id="getById" resultType="com.zcf.pojo.Student">
+        SELECT 
+            s.id,
+            s.name,
+            s.no,
+            s.gender,
+            s.phone,
+            s.id_card as idCard,
+            s.is_college as isCollege,
+            s.address,
+            s.degree,
+            s.graduation_date as graduationDate,
+            s.clazz_id as clazzId,
+            s.violation_count as violationCount,
+            s.violation_score as violationScore,
+            s.create_time as createTime,
+            s.update_time as updateTime,
+            c.name as clazzName
+        FROM student s
+        LEFT JOIN clazz c ON s.clazz_id = c.id
+        WHERE s.id = #{id}
+    </select>
+    <select id="getStudentDegreeData" resultType="java.util.Map">
+        SELECT
+            (
+                case when degree=1 then '初中'
+                when degree=2 then '高中'
+                when degree=3 then '大专'
+                when degree=4 then '本科'
+                when degree=5 then '硕士'
+                else '其他'
+                end
+                )as name,
+        count(*) as value
+        FROM student
+        GROUP BY degree
+    </select>
+
+    <!-- 修改学员信息 -->
+    <update id="update" parameterType="com.zcf.pojo.Student">
+        UPDATE student
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="no != null and no != ''">
+                no = #{no},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="idCard != null and idCard != ''">
+                id_card = #{idCard},
+            </if>
+            <if test="isCollege != null">
+                is_college = #{isCollege},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="degree != null">
+                degree = #{degree},
+            </if>
+            <if test="graduationDate != null">
+                graduation_date = #{graduationDate},
+            </if>
+            <if test="clazzId != null">
+                clazz_id = #{clazzId},
+            </if>
+            <if test="violationCount != null">
+                violation_count = #{violationCount},
+            </if>
+            <if test="violationScore != null">
+                violation_score = #{violationScore},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 批量删除学员信息 -->
+    <delete id="deleteByIds" parameterType="java.util.List">
+        DELETE FROM student WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 处理学员违纪 -->
+    <update id="handleViolation">
+        UPDATE student 
+        SET 
+            violation_count = violation_count + 1,
+            violation_score = violation_score + #{score},
+            update_time = NOW()
+        WHERE id = #{id}
+    </update>
+
+</mapper>

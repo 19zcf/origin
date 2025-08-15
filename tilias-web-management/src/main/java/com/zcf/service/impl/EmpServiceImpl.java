@@ -43,6 +43,12 @@ public class EmpServiceImpl implements EmpService {
         return new PageResult<>(pageResult.getTotal(),pageResult.getList());
     }
 
+    @Override
+    public List<Emp> list() {
+        // 查询全部员工信息
+        return empMapper.listAll();
+    }
+
     /**
      * 保存员工信息
      * @param emp

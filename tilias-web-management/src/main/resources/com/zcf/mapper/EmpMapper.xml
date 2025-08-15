@@ -50,7 +50,7 @@
         </foreach>
     </delete>
     <select id="list" resultType="com.zcf.pojo.Emp">
-        select e.*,d.name from emp e left join dept d on e.dept_id=d.id
+        select e.*,d.name deptName from emp e left join dept d on e.dept_id=d.id
         <where>
             <if test="name != null and name != ''">
                 and e.name like concat('%',#{name},'%')
@@ -62,6 +62,12 @@
                 and e.entry_date between #{begin} and #{end}
             </if>
         </where>
+        order by e.update_time desc
+    </select>
+    
+    <!-- 查询全部员工信息 -->
+    <select id="listAll" resultType="com.zcf.pojo.Emp">
+        select e.*,d.name deptName from emp e left join dept d on e.dept_id=d.id
         order by e.update_time desc
     </select>
     <!--定义empResultMap-->

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import com.zcf.exception.ClazzDeleteException;
 
 /**
  * 全局异常处理
@@ -29,6 +30,12 @@ public class GlobalExceptionHandle {
         String errMsg=message.substring(i);
         String[] arr=errMsg.split(" ");
         return Result.error("数据已存在:"+arr[2]);
+    }
+
+    @ExceptionHandler
+    public Result handleClazzDeleteException(ClazzDeleteException e) {
+        log.error("班级删除异常:{}", e.getMessage());
+        return Result.error(e.getMessage());
     }
 
 }

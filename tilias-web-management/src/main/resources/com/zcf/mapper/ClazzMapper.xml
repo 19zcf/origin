@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zcf.mapper.ClazzMapper">
+
+    <!-- 根据条件查询班级列表 -->
+    <select id="list" resultType="com.zcf.pojo.Clazz">
+        SELECT 
+            c.id,
+            c.name,
+            c.room,
+            c.begin_date as beginDate,
+            c.end_date as endDate,
+            c.master_id as masterId,
+            e.name as masterName,
+            c.create_time as createTime,
+            c.update_time as updateTime
+        FROM clazz c
+        LEFT JOIN emp e ON c.master_id = e.id
+        <where>
+            <if test="name != null and name != ''">
+                AND c.name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="begin != null">
+                AND c.end_date >= #{begin}
+            </if>
+            <if test="end != null">
+                AND c.end_date &lt;= #{end}
+            </if>
+        </where>
+        ORDER BY c.update_time DESC
+    </select>
+
+    <!-- 根据条件查询班级总数 -->
+    <select id="getTotal" resultType="long">
+        SELECT COUNT(*)
+        FROM clazz c
+        <where>
+            <if test="name != null and name != ''">
+                AND c.name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="begin != null">
+                AND c.end_date >= #{begin}
+            </if>
+            <if test="end != null">
+                AND c.end_date &lt;= #{end}
+            </if>
+        </where>
+    </select>
+
+    <!-- 保存班级信息 -->
+    <insert id="save" parameterType="com.zcf.pojo.Clazz">
+        INSERT INTO clazz (
+            name, room, begin_date, end_date, master_id, subject, 
+            create_time, update_time
+        ) VALUES (
+            #{name}, #{room}, #{beginDate}, #{endDate}, #{masterId}, #{subject}, 
+            #{createTime}, #{updateTime}
+        )
+    </insert>
+
+    <!-- 根据ID查询班级信息 -->
+    <select id="getById" resultType="com.zcf.pojo.Clazz">
+        SELECT 
+            c.id,
+            c.name,
+            c.room,
+            c.begin_date as beginDate,
+            c.end_date as endDate,
+            c.master_id as masterId,
+            c.subject,
+            c.create_time as createTime,
+            c.update_time as updateTime
+        FROM clazz c
+        WHERE c.id = #{id}
+    </select>
+
+    <!-- 修改班级信息 -->
+    <update id="update" parameterType="com.zcf.pojo.Clazz">
+        UPDATE clazz
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="room != null and room != ''">
+                room = #{room},
+            </if>
+            <if test="beginDate != null">
+                begin_date = #{beginDate},
+            </if>
+            <if test="endDate != null">
+                end_date = #{endDate},
+            </if>
+            <if test="masterId != null">
+                master_id = #{masterId},
+            </if>
+            <if test="subject != null">
+                subject = #{subject},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除班级信息 -->
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM clazz WHERE id = #{id}
+    </delete>
+
+    <!-- 检查班级下是否有学生 -->
+    <select id="countStudentsByClazzId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM student WHERE clazz_id = #{clazzId}
+    </select>
+
+    <!-- 查询所有班级信息 -->
+    <select id="listAll" resultType="com.zcf.pojo.Clazz">
+        SELECT 
+            c.id,
+            c.name,
+            c.room,
+            c.begin_date as beginDate,
+            c.end_date as endDate,
+            c.master_id as masterId,
+            e.name as masterName,
+            c.subject,
+            c.create_time as createTime,
+            c.update_time as updateTime
+        FROM clazz c
+        LEFT JOIN emp e ON c.master_id = e.id
+        ORDER BY c.update_time DESC
+    </select>
+
+    <!-- 统计每个班级的人数 -->
+    <select id="getStudentCountData" resultType="java.util.Map">
+        SELECT 
+            c.name as clazzlist,
+            COUNT(s.id) as datalist
+        FROM clazz c
+        LEFT JOIN student s ON c.id = s.clazz_id
+        GROUP BY c.id, c.name
+        ORDER BY datalist DESC
+    </select>
+
+</mapper> 
