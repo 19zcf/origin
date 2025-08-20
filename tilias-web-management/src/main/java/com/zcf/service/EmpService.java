@@ -2,6 +2,7 @@ package com.zcf.service;
 
 import com.zcf.pojo.Emp;
 import com.zcf.pojo.EmpQueryParam;
+import com.zcf.pojo.LoginInfo;
 import com.zcf.pojo.PageResult;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
@@ -40,4 +41,6 @@ public interface EmpService {
     Emp getById(Integer id);
 
     void update(Emp emp);
+
+    LoginInfo login(Emp emp);
 }

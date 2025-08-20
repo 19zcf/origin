@@ -1,5 +1,6 @@
 package com.zcf.controller;
 
+import com.zcf.annotation.OperateLog;
 import com.zcf.pojo.Student;
 import com.zcf.pojo.StudentQueryParam;
 import com.zcf.pojo.PageResult;
@@ -52,6 +53,7 @@ public class StudentController {
      * @return 操作结果
      */
     @PostMapping
+    @OperateLog(value = "添加学员", operateType = "增")
     public Result save(@RequestBody Student student) {
         log.info("添加学员信息：{}", student);
         
@@ -109,6 +111,7 @@ public class StudentController {
      * @return 操作结果
      */
     @PutMapping
+    @OperateLog(value = "修改学员", operateType = "改")
     public Result update(@RequestBody Student student) {
         log.info("修改学员信息：{}", student);
         
@@ -158,6 +161,7 @@ public class StudentController {
      * @return 操作结果
      */
     @DeleteMapping("/{ids}")
+    @OperateLog(value = "删除学员", operateType = "删")
     public Result deleteByIds(@PathVariable String ids) {
         log.info("批量删除学员信息：{}", ids);
         
@@ -203,6 +207,7 @@ public class StudentController {
      * @return 操作结果
      */
     @PutMapping("/violation/{id}/{score}")
+    @OperateLog(value = "处理学员违纪扣分", operateType = "改")
     public Result handleViolation(@PathVariable Integer id, @PathVariable Integer score) {
         log.info("处理学员违纪：学员ID={}, 扣分={}", id, score);
         

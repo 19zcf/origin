@@ -1,6 +1,7 @@
 package com.zcf.controller;
 
 
+import com.zcf.annotation.OperateLog;
 import com.zcf.pojo.Result;
 import com.zcf.utils.AliyunOSSOperator;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +51,7 @@ public class UploadController {
      * @throws IOException
      */
     @PostMapping
+    @OperateLog(value = "文件上传", operateType = "增")
     public Result upload(MultipartFile  file) throws Exception {
         log.info("上传文件开始，文件名：{}，文件大小：{}",file.getOriginalFilename(),file.getSize());
         String url = aliyunOSSOperator.upload(file.getBytes(), file.getOriginalFilename());

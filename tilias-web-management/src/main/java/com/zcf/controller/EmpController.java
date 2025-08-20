@@ -1,5 +1,6 @@
 package com.zcf.controller;
 
+import com.zcf.annotation.OperateLog;
 import com.zcf.pojo.Emp;
 import com.zcf.pojo.EmpQueryParam;
 import com.zcf.pojo.PageResult;
@@ -47,6 +48,7 @@ public class EmpController {
     }
 
     @PostMapping
+    @OperateLog(value = "添加员工", operateType = "增")
     public Result save(@RequestBody Emp emp){
         log.info("保存员工信息：{}", emp);
         empService.save(emp);
@@ -54,6 +56,7 @@ public class EmpController {
     }
 
     @DeleteMapping
+    @OperateLog(value = "删除员工", operateType = "删")
     public Result delete(Integer[] ids){
         log.info("批量删除员工信息：{}", Arrays.toString(ids));
         empService.delete(ids);
@@ -73,6 +76,7 @@ public class EmpController {
     }
 
     @PutMapping
+    @OperateLog(value = "修改员工", operateType = "改")
     public Result update(@RequestBody Emp emp){
         log.info("更新员工信息：{}", emp);
         empService.update(emp);

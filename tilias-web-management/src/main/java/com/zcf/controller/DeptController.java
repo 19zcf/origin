@@ -1,5 +1,6 @@
 package com.zcf.controller;
 
+import com.zcf.annotation.OperateLog;
 import com.zcf.pojo.Dept;
 import com.zcf.pojo.Result;
 import com.zcf.service.DeptService;
@@ -23,6 +24,7 @@ public class DeptController {
     }
 
     @RequestMapping(value = "/depts",method = RequestMethod.DELETE)
+    @OperateLog(value = "删除部门", operateType = "删")
     public Result delete(Integer id ) {
         log.info("删除部门信息");
         deptService.deleteById(id);
@@ -31,6 +33,7 @@ public class DeptController {
     }
 
     @RequestMapping(value = "/depts",method = RequestMethod.POST)
+    @OperateLog(value = "添加部门", operateType = "增")
     public Result save(@RequestBody Dept dept) {
         log.info("保存部门信息"+ dept);
         deptService.save(dept);
@@ -45,6 +48,7 @@ public class DeptController {
     }
 
     @RequestMapping(value = "depts",method = RequestMethod.PUT)
+    @OperateLog(value = "修改部门", operateType = "改")
     public Result update(@RequestBody Dept dept) {
         log.info("更新部门信息"+ dept);
         deptService.update(dept);

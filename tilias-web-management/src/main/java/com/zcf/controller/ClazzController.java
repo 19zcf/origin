@@ -1,5 +1,6 @@
 package com.zcf.controller;
 
+import com.zcf.annotation.OperateLog;
 import com.zcf.pojo.Clazz;
 import com.zcf.pojo.ClazzQueryParam;
 import com.zcf.pojo.PageResult;
@@ -51,6 +52,7 @@ public class ClazzController {
      * @return 操作结果
      */
     @PostMapping
+    @OperateLog(value = "添加班级", operateType = "增")
     public Result save(@RequestBody Clazz clazz) {
         log.info("添加班级信息：{}", clazz);
         
@@ -105,6 +107,7 @@ public class ClazzController {
      * @return 操作结果
      */
     @PutMapping
+    @OperateLog(value = "修改班级", operateType = "改")
     public Result update(@RequestBody Clazz clazz) {
         log.info("修改班级信息：{}", clazz);
         
@@ -145,6 +148,7 @@ public class ClazzController {
      * @return 操作结果
      */
     @DeleteMapping("/{id}")
+    @OperateLog(value = "删除班级", operateType = "删")
     public Result delete(@PathVariable Integer id) {
         log.info("删除班级信息：{}", id);
         
