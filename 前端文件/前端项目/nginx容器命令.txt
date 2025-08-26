@@ -1,0 +1,7 @@
+docker run -d \
+ --name nginx-tlias \
+ -v /root/tlias-nginx/html:/usr/share/nginx/html \
+ -v /root/tlias-nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
+ --network zcf \
+ -p 80:80 \
+nginx:1.20.2
