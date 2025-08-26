@@ -3,9 +3,11 @@ spring:
     name: tilias-web-management
 
   datasource:
-    url: jdbc:mysql://localhost:3306/tilias
+#    url: jdbc:mysql://192.168.100.128:3306/tlias
+#    在docker内部直接使用容器名
+    url: jdbc:mysql://mysql:3306/tlias
     username: root
-    password: 123456
+    password: 123
     driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multipart:

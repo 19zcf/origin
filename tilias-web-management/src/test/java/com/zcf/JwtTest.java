@@ -28,17 +28,6 @@ public class JwtTest {
 
         System.out.println( token);
     }
-    /**
-     * 解析token
-     */
-    @Test
-    public void testParseToken() {
-        String token="eyJhbGciOiJIUzI1NiJ9.eyJwYXNzd29yZCI6IjEyMzQ1NiIsImlkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzU1NTc2ODA1fQ.zJ8Rcr8LA7voGEj4G6Vn5q4ZPA2rc-wUWzuPLCMdksE";
-        Claims claims = Jwts.parser().setSigningKey("secret")
-                .parseClaimsJws(token)
-                .getBody();
 
-        System.out.println(claims);
-    }
 
 }
